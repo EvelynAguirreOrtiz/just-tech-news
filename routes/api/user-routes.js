@@ -27,6 +27,14 @@ router.get('/:id', (req, res) => {
         attributes: ['id', 'title', 'post_url', 'created_at']
       },
       {
+        model: Comment,
+        attributes: ['id', 'comment_text', 'created_at'],
+        include: {
+          model: Post,
+          attributes: ['title']
+        }
+      },
+      {
         model: Post,
         attributes: ['title'],
         through: Vote,
@@ -74,9 +82,6 @@ router.post('/login', (req, res) => {
       return;
     }
 
-    // add comment syntax in front of this line in the .then()
-    // res.json({ user: dbUserData });
-
     // Verify user
     const validPassword = dbUserData.checkPassword(req.body.password);
     if (!validPassword) {
@@ -91,14 +96,6 @@ router.post('/login', (req, res) => {
 // PUT /api/users/1
 router.put('/:id', (req, res) => {
   // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
-
-  // pass in req.body instead to only update what's passed through
-  // User.update(req.body, {
-  //   individualHooks: true,
-  //   where: {
-  //     id: req.params.id
-  //   }
-  // })
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
   User.update(req.body, {
