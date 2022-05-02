@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Post, Vote } = require("../../models");
+const { User, Post, Vote, Comment } = require("../../models");
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -88,7 +88,7 @@ router.post('/login', (req, res) => {
       res.status(400).json({ message: 'Incorrect password!' });
       return;
     }
-
+    
     res.json({ user: dbUserData, message: 'You are now logged in!' });
   });
 });
@@ -99,6 +99,7 @@ router.put('/:id', (req, res) => {
 
   // if req.body has exact key/value pairs to match the model, you can just use `req.body` instead
   User.update(req.body, {
+    individualHooks: true,
     where: {
       id: req.params.id
     }
