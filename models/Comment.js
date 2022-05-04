@@ -16,7 +16,7 @@ Comment.init(
       allowNull: false,
       validate: {
         // this means the password must be at least four characters long
-        len: [1]
+        len: [4]
       }
     },
     user_id: {
